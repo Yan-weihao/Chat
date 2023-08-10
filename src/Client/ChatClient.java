@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class ChatClient extends Frame {
@@ -16,7 +18,6 @@ public class ChatClient extends Frame {
     TextArea taContent = new TextArea();
     public static void main(String[] args) {
         new ChatClient().window();
-
 
     }
 
@@ -35,7 +36,6 @@ public class ChatClient extends Frame {
        });
        tfTxt.addActionListener(new TfListener());
        setVisible(true);
-       connect();
     }
     private class TfListener implements ActionListener{
         @Override
@@ -43,18 +43,21 @@ public class ChatClient extends Frame {
             String s = tfTxt.getText().trim();
             taContent.setText(s);
             tfTxt.setText("");
+            connect(s);
         }
-
     }
-    public void connect(){
+    public void connect(String s){
         try {
             Socket Cs = new Socket("127.0.0.1",8888);
-            System.out.println("connect");
+            OutputStream os = Cs.getOutputStream();
+            DataOutputStream Dos = new DataOutputStream(os);
+            Dos.writeUTF(s);
+            Dos.flush();
+            Dos.close();
+            Cs.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
 

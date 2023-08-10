@@ -1,7 +1,7 @@
 package Server;
 
-import com.sun.corba.se.spi.activation.Server;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,9 +14,10 @@ public class ChatServer {
 
             while (true){
                 Socket s= Ss.accept();
-                System.out.println("a client connected!");
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                System.out.println(dis.readUTF());
+;
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
