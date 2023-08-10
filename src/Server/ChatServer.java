@@ -18,7 +18,9 @@ public class ChatServer {
             Ss = new ServerSocket(8888);
         }
         catch (BindException e) {
-            System.out.println("sss.....");
+            System.out.println("端口使用中.....");
+            System.out.println("切换窗口");
+            System.exit(-1);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -52,4 +54,14 @@ public class ChatServer {
         }
 
     }
+
+    class Client implements Runnable{
+        Socket Ss;
+
+        @Override
+        public void run() {
+
+        }
+    }
 }
+
