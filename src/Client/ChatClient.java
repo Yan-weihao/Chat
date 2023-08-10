@@ -1,6 +1,8 @@
 package Client;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,15 +20,22 @@ public class ChatClient extends Frame {
        add(tfTxt,BorderLayout.SOUTH);
        add(taContent,BorderLayout.NORTH);
        pack();
-
-
        this.addWindowListener(new WindowAdapter() {
-
            @Override
            public void windowClosing(WindowEvent e) {
                System.exit(0);
            }
        });
+       tfTxt.addActionListener(new TfListener());
        setVisible(true);
+    }
+    private class TfListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String s = tfTxt.getText().trim();
+            taContent.setText(s);
+            tfTxt.setText("");
+        }
+
     }
 }
