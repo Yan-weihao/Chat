@@ -1,6 +1,8 @@
 package Client;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ChatClient extends Frame {
     //用于响应输入事件
@@ -15,7 +17,16 @@ public class ChatClient extends Frame {
        this.setSize(400,400);
        add(tfTxt,BorderLayout.SOUTH);
        add(taContent,BorderLayout.NORTH);
-       setVisible(true);
        pack();
+
+
+       this.addWindowListener(new WindowAdapter() {
+
+           @Override
+           public void windowClosing(WindowEvent e) {
+               System.exit(0);
+           }
+       });
+       setVisible(true);
     }
 }
