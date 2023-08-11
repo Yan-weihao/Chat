@@ -1,8 +1,8 @@
 package Server;
 
+
 import com.sun.deploy.util.SessionState;
 
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ChatServer {
     List <Client> clients = new ArrayList<Client>();//存放线程
+
+    int sum = 0;
     public static void main(String[] args) {
         new ChatServer().Stata();
 
@@ -59,7 +59,20 @@ public class ChatServer {
         }
 
     }
-
+////这个线程用于监听客户端连接服务端情况
+//    class Monitor implements Runnable{
+//
+//        Monitor(boolean sConnecated){
+//            if (sConnecated){
+//
+//            }
+//        }
+//
+//        @Override
+//        public void run() {
+//
+//        }
+//    }
 
     class Client implements Runnable{
         private Socket Ss;
@@ -81,7 +94,8 @@ public class ChatServer {
                 dou.writeUTF(str);
                 dou.flush();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+              //  clientSet.remove(this);
+                System.out.println("write错误");
             }
         }
         @Override
@@ -89,28 +103,27 @@ public class ChatServer {
             try {
                 while (bConnected){
                     String str = dis.readUTF();
-                   System.out.println("clients.size :"+ clients.size());
                     for (int i = 0; i < clients.size(); i++) {
-                       Client c = clients.get(i);
-                        System.out.println(str);
-                        c.Send(str); //数据转发
+                        Client c = clients.get(i);
+                        c.Send(str);
                     }
                 }
-            }catch (EOFException e){
-                System.out.println("有一个客户端断开连接！");
+            } catch (EOFException e){
+                clients.remove(this);
+               //e.printStackTrace();
+                System.out.println("Client Closed");
             } catch (IOException e){
                 e.printStackTrace();
             } finally {
                 try {
                     if(dis != null) dis.close();
-                   // if(Ss != null)  Ss.close();
+                  //  if(Ss != null)  Ss.close();
                     if(dou != null) dou.close();
                 }
                 catch (IOException e1){
                     e1.printStackTrace();
                 }
             }
-
         }
     }
 }
