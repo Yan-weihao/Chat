@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,9 +95,10 @@ public class ChatServer {
                         System.out.println(str);
                         c.Send(str); //数据转发
                     }
-
                 }
-            }catch (IOException e){
+            }catch (EOFException e){
+                System.out.println("有一个客户端断开连接！");
+            } catch (IOException e){
                 e.printStackTrace();
             } finally {
                 try {
